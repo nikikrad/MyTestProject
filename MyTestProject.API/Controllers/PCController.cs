@@ -6,6 +6,7 @@ using MyTestProject.BLL.Services.Interfaces;
 
 namespace MyTestProject.API.Controllers
 {
+    [ApiController]
     [Route("[controller]/[action]")]
     public class PCController: ControllerBase
     {
@@ -38,12 +39,29 @@ namespace MyTestProject.API.Controllers
             {
                 if (pc == null)
                     return BadRequest();
+
                 var mappedPC = _mapper.Map<PC>(pc);
                 await _pcService.Create(mappedPC);
                 return Ok();
             }catch(Exception ex)
             {
                 return StatusCode(500);
+            }
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(DeletePC pc)
+        {
+            try
+            {
+                if (pc == null)
+                    return BadRequest(500);
+                var mappedPC = _mapper.Map<PC>(pc);
+                await _pcService.Delete(mappedPC);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

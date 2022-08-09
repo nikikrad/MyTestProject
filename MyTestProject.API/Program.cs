@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+ 
 using MyTestProject.API.AutoMapper;
 using MyTestProject.BLL.Entities;
 using MyTestProject.BLL.Repositories;
@@ -20,8 +21,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(typeof(GameProfile), typeof(PlayerProfile), typeof(PCProfile));
+builder.Services.AddAutoMapper(typeof(GameProfile), typeof(PlayerProfile), typeof(PCProfile), typeof(OSProfile));
 
+builder.Services.AddScoped<IOSFinder, OSFinder>();
+builder.Services.AddScoped<IOSService, OSService>();
+builder.Services.AddScoped<IRepository<OS>, Repository<OS>>();
+builder.Services.AddScoped<DbSet<OS>>((t => t.GetRequiredService<StoreContext>().OSs));
 builder.Services.AddScoped<IPCService, PCService>();
 builder.Services.AddScoped<IPCFinder, PCFinder>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();

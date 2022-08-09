@@ -36,16 +36,44 @@ namespace MyTestProject.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PCs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Processor = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VideoCard = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OSId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PCs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PCs_OSs_OSId",
+                        column: x => x.OSId,
+                        principalTable: "OSs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nickname = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nickname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PCId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Players_PCs_PCId",
+                        column: x => x.PCId,
+                        principalTable: "PCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,33 +100,6 @@ namespace MyTestProject.DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PCs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Processor = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VideoCard = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false),
-                    OSId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PCs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PCs_OSs_OSId",
-                        column: x => x.OSId,
-                        principalTable: "OSs",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PCs_Players_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_GamePlayer_PlayersId",
                 table: "GamePlayer",
@@ -110,9 +111,10 @@ namespace MyTestProject.DAL.Migrations
                 column: "OSId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PCs_PlayerId",
-                table: "PCs",
-                column: "PlayerId");
+                name: "IX_Players_PCId",
+                table: "Players",
+                column: "PCId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -121,16 +123,16 @@ namespace MyTestProject.DAL.Migrations
                 name: "GamePlayer");
 
             migrationBuilder.DropTable(
-                name: "PCs");
-
-            migrationBuilder.DropTable(
                 name: "Games");
 
             migrationBuilder.DropTable(
-                name: "OSs");
+                name: "Players");
 
             migrationBuilder.DropTable(
-                name: "Players");
+                name: "PCs");
+
+            migrationBuilder.DropTable(
+                name: "OSs");
         }
     }
 }

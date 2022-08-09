@@ -6,6 +6,7 @@ using MyTestProject.BLL.Services.Interfaces;
 
 namespace MyTestProject.API.Controllers
 {
+    [ApiController]
     [Route("[controller]/[action]")]
     public class PlayerController:ControllerBase
     {
@@ -44,6 +45,21 @@ namespace MyTestProject.API.Controllers
             }catch(Exception ex)
             {
                 return StatusCode(500);
+            }
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(DeletePlayer player)
+        {
+            try
+            {
+                if (player == null)
+                    return BadRequest(500);
+                var mappedPlayer = _mapper.Map<Player>(player);
+                await _playerService.Delete(mappedPlayer);
+                return Ok();
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

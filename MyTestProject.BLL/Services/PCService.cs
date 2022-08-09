@@ -3,11 +3,6 @@ using MyTestProject.BLL.Finder;
 using MyTestProject.BLL.Repositories;
 using MyTestProject.BLL.Services.Interfaces;
 using MyTestProject.BLL.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyTestProject.BLL.Services
 {

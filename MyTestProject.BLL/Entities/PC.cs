@@ -6,6 +6,8 @@
         public string Processor { get; set; } = String.Empty;
         public string VideoCard { get; set; } = String.Empty;
         public Player Player { get; set; }
+        public int? OSId { get; set; }
+        public OS? OS { get; set; }
 
     }
 }

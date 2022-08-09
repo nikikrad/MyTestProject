@@ -5,14 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using MyTestProject.DAL;
 
 #nullable disable
 
 namespace MyTestProject.DAL.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20220807171014_init")]
-    partial class init
+    [Migration("20220809201107_init3")]
+    partial class init3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -86,9 +87,6 @@ namespace MyTestProject.DAL.Migrations
                     b.Property<int?>("OSId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Processor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -100,8 +98,6 @@ namespace MyTestProject.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OSId");
-
-                    b.HasIndex("PlayerId");
 
                     b.ToTable("PCs");
                 });
@@ -118,7 +114,14 @@ namespace MyTestProject.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PCId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PCId")
+                        .IsUnique()
+                        .HasFilter("[PCId] IS NOT NULL");
 
                     b.ToTable("Players");
                 });
@@ -140,22 +143,31 @@ namespace MyTestProject.DAL.Migrations
 
             modelBuilder.Entity("MyTestProject.BLL.Entities.PC", b =>
                 {
-                    b.HasOne("MyTestProject.BLL.Entities.OS", null)
+                    b.HasOne("MyTestProject.BLL.Entities.OS", "OS")
                         .WithMany("PC")
                         .HasForeignKey("OSId");
 
-                    b.HasOne("MyTestProject.BLL.Entities.Player", "Player")
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("OS");
+                });
 
-                    b.Navigation("Player");
+            modelBuilder.Entity("MyTestProject.BLL.Entities.Player", b =>
+                {
+                    b.HasOne("MyTestProject.BLL.Entities.PC", "PC")
+                        .WithOne("Player")
+                        .HasForeignKey("MyTestProject.BLL.Entities.Player", "PCId");
+
+                    b.Navigation("PC");
                 });
 
             modelBuilder.Entity("MyTestProject.BLL.Entities.OS", b =>
                 {
                     b.Navigation("PC");
+                });
+
+            modelBuilder.Entity("MyTestProject.BLL.Entities.PC", b =>
+                {
+                    b.Navigation("Player")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

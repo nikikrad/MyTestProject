@@ -52,6 +52,21 @@ namespace MyTestProject.API.Controllers
                 return StatusCode(500);
             }
         }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(DeleteGame game)
+        {
+            try
+            {
+                if (game == null)
+                    return BadRequest(500);
+                var mappedGame = _mapper.Map<Game>(game);
+                await _gameService.Delete(mappedGame);
+                return Ok();
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }

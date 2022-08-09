@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTestProject.DAL;
 
@@ -11,9 +12,10 @@ using MyTestProject.DAL;
 namespace MyTestProject.DAL.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20220809200336_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +84,7 @@ namespace MyTestProject.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("OSId")
+                    b.Property<int>("OSId")
                         .HasColumnType("int");
 
                     b.Property<string>("Processor")
@@ -112,14 +114,13 @@ namespace MyTestProject.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PCId")
+                    b.Property<int>("PCId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PCId")
-                        .IsUnique()
-                        .HasFilter("[PCId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Players");
                 });
@@ -143,7 +144,9 @@ namespace MyTestProject.DAL.Migrations
                 {
                     b.HasOne("MyTestProject.BLL.Entities.OS", "OS")
                         .WithMany("PC")
-                        .HasForeignKey("OSId");
+                        .HasForeignKey("OSId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OS");
                 });
@@ -152,7 +155,9 @@ namespace MyTestProject.DAL.Migrations
                 {
                     b.HasOne("MyTestProject.BLL.Entities.PC", "PC")
                         .WithOne("Player")
-                        .HasForeignKey("MyTestProject.BLL.Entities.Player", "PCId");
+                        .HasForeignKey("MyTestProject.BLL.Entities.Player", "PCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PC");
                 });
