@@ -10,17 +10,17 @@ namespace MyTestProject.BLL.Services
     {
         private readonly IRepository<Game> _gameRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly Finder.IGameFinder _finder;
+        private readonly IGameFinder _gameFinder;
 
-        public GameService(IRepository<Game> gameRepository, IUnitOfWork unitOfWork, Finder.IGameFinder finder)
+        public GameService(IRepository<Game> gameRepository, IUnitOfWork unitOfWork, IGameFinder gameFinder)
         {
             _gameRepository = gameRepository;
             _unitOfWork = unitOfWork;
-            _finder = finder;
+            _gameFinder = gameFinder;
         }
-        public Task<IEnumerable<Game>> Get()
+        public Task<List<Game>> Get()
         {
-            return _finder.GetData();
+            return _gameFinder.Get();
         }
 
         public Task Create(Game entity)

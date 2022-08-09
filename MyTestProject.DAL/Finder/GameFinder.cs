@@ -6,15 +6,21 @@ namespace MyTestProject.DAL.Finder
 {
     public class GameFinder : IGameFinder
     {
-        private StoreContext db;
-        public GameFinder(StoreContext context)
+        private readonly DbSet<Game> _games;
+
+        public GameFinder(DbSet<Game> games)
         {
-            db = context;
+            _games = games;
         }
 
-        async Task<IEnumerable<Game>> IGameFinder.GetData()
+        protected IQueryable<Game> AsQueryable()
         {
-            return await db.Games.ToListAsync();
+            return _games.AsQueryable();
+        }
+
+        public Task<List<Game>> Get()
+        {
+            return AsQueryable().ToListAsync();
         }
     }
 }

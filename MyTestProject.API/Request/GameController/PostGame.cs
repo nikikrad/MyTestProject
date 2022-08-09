@@ -1,4 +1,6 @@
-﻿namespace MyTestProject.API.Request.GameController
+﻿using MyTestProject.BLL.Entities;
+
+namespace MyTestProject.API.Request.GameController
 {
     public class PostGame
     {

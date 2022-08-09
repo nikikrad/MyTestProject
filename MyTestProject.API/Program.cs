@@ -14,18 +14,28 @@ using MyTestProject.BLL.Finder;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(typeof(GameProfile));
+builder.Services.AddAutoMapper(typeof(GameProfile), typeof(PlayerProfile), typeof(PCProfile));
+
+builder.Services.AddScoped<IPCService, PCService>();
+builder.Services.AddScoped<IPCFinder, PCFinder>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<IPlayerFinder, PlayerFinder>();
+builder.Services.AddScoped<DbSet<Game>>(t => t.GetRequiredService<StoreContext>().Games);
+builder.Services.AddScoped<DbSet<Player>>(t => t.GetRequiredService<StoreContext>().Players);
+builder.Services.AddScoped<DbSet<PC>>(t => t.GetRequiredService<StoreContext>().PCs);
 builder.Services.AddScoped<IGameFinder, GameFinder>();
 builder.Services.AddScoped<IRepository<Game>, Repository<Game>>();
+builder.Services.AddScoped<IRepository<Player>, Repository<Player>>();
+builder.Services.AddScoped<IRepository<PC>, Repository<PC>>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped <IGameService, GameService> ();
 
-builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
     

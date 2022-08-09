@@ -13,20 +13,25 @@ namespace MyTestProject.API.Controllers
     {
         private readonly IGameService _gameService;
         private readonly IMapper _mapper;
-        private readonly IGameFinder _finder;
 
-        public GameContoller(IGameService gameService, IMapper mapper,IGameFinder finder)
+        public GameContoller(IGameService gameService, IMapper mapper)
         {
             _gameService = gameService;
             _mapper = mapper;
-            _finder = finder;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<List<Game>>> Get()
         {
-            var data = _finder.GetData();
-            return Ok(await data);
+            try
+            {
+                var data = await _gameService.Get();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -34,7 +39,7 @@ namespace MyTestProject.API.Controllers
         {
             try
             {
-                if(game == null)
+                if (game == null)
                 {
                     return BadRequest();
                 }
@@ -42,11 +47,11 @@ namespace MyTestProject.API.Controllers
                 await _gameService.Create(mappedGame);
                 return Ok();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500);
             }
         }
-        
+
     }
 }
