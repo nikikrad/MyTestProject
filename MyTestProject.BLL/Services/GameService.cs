@@ -1,4 +1,5 @@
 ﻿using MyTestProject.BLL.Entities;
+using MyTestProject.BLL.Finder;
 using MyTestProject.BLL.Repositories;
 using MyTestProject.BLL.Services.Interfaces;
 using MyTestProject.BLL.UnitOfWork;
@@ -9,11 +10,17 @@ namespace MyTestProject.BLL.Services
     {
         private readonly IRepository<Game> _gameRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly Finder.IGameFinder _finder;
 
-        public GameService(IRepository<Game> gameRepository, IUnitOfWork unitOfWork)
+        public GameService(IRepository<Game> gameRepository, IUnitOfWork unitOfWork, Finder.IGameFinder finder)
         {
             _gameRepository = gameRepository;
             _unitOfWork = unitOfWork;
+            _finder = finder;
+        }
+        public Task<IEnumerable<Game>> Get()
+        {
+            return _finder.GetData();
         }
 
         public Task Create(Game entity)

@@ -1,5 +1,8 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MyTestProject.API.Request.GameController;
 using MyTestProject.BLL.Entities;
+using MyTestProject.BLL.Finder;
 using MyTestProject.BLL.Services.Interfaces;
 
 namespace MyTestProject.API.Controllers
@@ -9,14 +12,25 @@ namespace MyTestProject.API.Controllers
     public class GameContoller : ControllerBase
     {
         private readonly IGameService _gameService;
+        private readonly IMapper _mapper;
+        private readonly IGameFinder _finder;
 
-        public GameContoller(IGameService gameService)
+        public GameContoller(IGameService gameService, IMapper mapper,IGameFinder finder)
         {
             _gameService = gameService;
+            _mapper = mapper;
+            _finder = finder;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var data = _finder.GetData();
+            return Ok(await data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Game game)
+        public async Task<IActionResult> Create(PostGame game)
         {
             try
             {
@@ -24,7 +38,8 @@ namespace MyTestProject.API.Controllers
                 {
                     return BadRequest();
                 }
-                await _gameService.Create(game);
+                var mappedGame = _mapper.Map<Game>(game);
+                await _gameService.Create(mappedGame);
                 return Ok();
             }
             catch(Exception ex)
@@ -32,5 +47,6 @@ namespace MyTestProject.API.Controllers
                 return StatusCode(500);
             }
         }
+        
     }
 }
