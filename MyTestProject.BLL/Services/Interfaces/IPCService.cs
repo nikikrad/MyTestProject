@@ -13,5 +13,6 @@ namespace MyTestProject.BLL.Services.Interfaces
         public Task Create(PC entity);
         public Task Delete(PC entity);
         public Task Update(PC entity);
+        public Task<PC?> GetById(int id);
     }
 }

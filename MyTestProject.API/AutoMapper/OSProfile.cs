@@ -9,7 +9,7 @@ namespace MyTestProject.API.AutoMapper
         public OSProfile()
         {
             CreateMap<PostOS, OS>();
-            CreateMap<DeleteOS, OS>();
+            CreateMap<PutOS, OS>(); 
         }
     }
 }

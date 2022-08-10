@@ -9,7 +9,7 @@ namespace MyTestProject.API.AutoMapper
         public PCProfile()
         {
             CreateMap<PostPC, PC>();
-            CreateMap<DeletePC, PC>();
+            CreateMap<PutPC, PC>();
         }
     }
 }

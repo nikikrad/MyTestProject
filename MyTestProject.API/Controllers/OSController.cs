@@ -48,14 +48,28 @@ namespace MyTestProject.API.Controllers
             }
         }
         [HttpDelete]
-        public async Task<ActionResult> Delete(DeleteOS os)
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id == null)
+                    return BadRequest(500);
+                await _iOSService.Delete(await _iOSService.GetById(id));
+                return Ok();
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update(PutOS os)
         {
             try
             {
                 if (os == null)
                     return BadRequest(500);
                 var mappedOS = _mapper.Map<OS>(os);
-                await _iOSService.Delete(mappedOS);
+                await _iOSService.Update(mappedOS);
                 return Ok();
             }catch(Exception ex)
             {

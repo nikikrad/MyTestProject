@@ -49,17 +49,31 @@ namespace MyTestProject.API.Controllers
             }
         }
         [HttpDelete]
-        public async Task<IActionResult> Delete(DeletePC pc)
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id == null)
+                    return BadRequest(500);
+                await _pcService.Delete(await _pcService.GetById(id));
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update(PutPC pc)
         {
             try
             {
                 if (pc == null)
                     return BadRequest(500);
                 var mappedPC = _mapper.Map<PC>(pc);
-                await _pcService.Delete(mappedPC);
+                await _pcService.Update(mappedPC);
                 return Ok();
-            }
-            catch (Exception ex)
+            }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }

@@ -10,5 +10,6 @@ namespace MyTestProject.BLL.Finder
     public interface IGameFinder
     {
         public Task<List<Game>> Get();
+        public Task<Game?> GetById(int id);
     }
 }

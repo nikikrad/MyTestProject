@@ -53,14 +53,29 @@ namespace MyTestProject.API.Controllers
             }
         }
         [HttpDelete]
-        public async Task<IActionResult> Delete(DeleteGame game)
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id == null)
+                    return BadRequest(500);
+
+                await _gameService.Delete(await _gameService.GetById(id));
+                return Ok();
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update(PutGame game)
         {
             try
             {
                 if (game == null)
                     return BadRequest(500);
                 var mappedGame = _mapper.Map<Game>(game);
-                await _gameService.Delete(mappedGame);
+                await _gameService.Update(mappedGame);
                 return Ok();
             }catch(Exception ex)
             {

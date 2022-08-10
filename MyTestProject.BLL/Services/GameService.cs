@@ -40,5 +40,10 @@ namespace MyTestProject.BLL.Services
             _gameRepository.Update(entity);
             return _unitOfWork.SaveChanges();
         }
+
+        public Task<Game?> GetById(int id)
+        {
+            return _gameFinder.GetById(id);
+        }
     }
 }

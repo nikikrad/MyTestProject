@@ -8,5 +8,6 @@ namespace MyTestProject.BLL.Services.Interfaces
         public Task Create(Game entity);
         public Task Update(Game entity);
         public Task Delete(Game entity);
+        public Task<Game?> GetById(int id);
     }
 }

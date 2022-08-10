@@ -9,7 +9,7 @@ namespace MyTestProject.API.AutoMapper
         public GameProfile()
         {
             CreateMap<PostGame, Game>();
-            CreateMap<DeleteGame, Game>();
+            CreateMap<PutGame, Game>();
         }
     }
 }

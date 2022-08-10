@@ -10,5 +10,6 @@ namespace MyTestProject.BLL.Finder
     public interface IPCFinder
     {
         public Task<List<PC>> Get();
+        public Task<PC?> GetById(int id);
     }
 }

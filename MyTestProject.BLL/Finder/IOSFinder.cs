@@ -10,5 +10,6 @@ namespace MyTestProject.BLL.Finder
     public interface IOSFinder
     {
         public Task<List<OS>> Get();
+        public Task<OS?> GetById(int id);
     }
 }

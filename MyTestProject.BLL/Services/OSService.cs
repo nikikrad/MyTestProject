@@ -40,6 +40,11 @@ namespace MyTestProject.BLL.Services
             return _osFinder.Get();
         }
 
+        public Task<OS?> GetById(int id)
+        {
+            return _osFinder.GetById(id);
+        }
+
         public Task Update(OS entity)
         {
             _repository.Update(entity);

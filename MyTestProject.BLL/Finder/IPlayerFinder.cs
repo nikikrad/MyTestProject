@@ -10,5 +10,6 @@ namespace MyTestProject.BLL.Finder
     public interface IPlayerFinder
     {
         public Task<List<Player>> Get();
+        public Task<Player?> GetById(int id);
     }
 }

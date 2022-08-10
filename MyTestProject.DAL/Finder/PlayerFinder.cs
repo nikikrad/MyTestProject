@@ -25,5 +25,10 @@ namespace MyTestProject.DAL.Finder
         {
             return AsQueryable().ToListAsync();
         }
+
+        public Task<Player?> GetById(int id)
+        {
+            return AsQueryable().FirstOrDefaultAsync(p => p.Id == id);
+        }
     }
 }

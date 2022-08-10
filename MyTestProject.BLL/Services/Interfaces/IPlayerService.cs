@@ -13,5 +13,6 @@ namespace MyTestProject.BLL.Services.Interfaces
         public Task Create(Player entity);
         public Task Update(Player entity);
         public Task Delete(Player entity);
+        public Task<Player> GetById(int id);
     }
 }

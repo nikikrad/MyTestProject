@@ -34,6 +34,11 @@ namespace MyTestProject.BLL.Services
             return _pcFinder.Get();
         }
 
+        public Task<PC?> GetById(int id)
+        {
+            return _pcFinder.GetById(id);
+        }
+
         public Task Update(PC entity)
         {
             _repository.Update(entity);

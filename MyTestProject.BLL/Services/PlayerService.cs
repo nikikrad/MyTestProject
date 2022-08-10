@@ -39,10 +39,15 @@ namespace MyTestProject.BLL.Services
             _repository.Delete(entity);
             return _unitOfWork.SaveChanges();
         }
-        Task IPlayerService.Update(Player entity)
+        public Task Update(Player entity)
         {
             _repository.Update(entity);
             return _unitOfWork.SaveChanges();
+        }
+
+        public Task<Player> GetById(int id)
+        {            
+            return _playerFinder.GetById(id);
         }
     }
 }
