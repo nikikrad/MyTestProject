@@ -18,9 +18,9 @@ namespace MyTestProject.BLL.Services
             _unitOfWork = unitOfWork;
             _gameFinder = gameFinder;
         }
-        public Task<List<Game>> Get()
+        public Task<List<Game>> Get(bool includePlayers = false)
         {
-            return _gameFinder.Get();
+            return _gameFinder.Get(includePlayers: includePlayers);
         }
 
         public Task Create(Game entity)
@@ -44,6 +44,16 @@ namespace MyTestProject.BLL.Services
         public Task<Game?> GetById(int id)
         {
             return _gameFinder.GetById(id);
+        }
+
+        public Task<List<Game>> GetAllFreeGames()
+        {
+            return _gameFinder.GetAllFreeGames();
+        }
+
+        public Task<List<Game>> GetGamesForPrice(int price)
+        {
+            return _gameFinder.GetGamesForPrice(price);
         }
     }
 }

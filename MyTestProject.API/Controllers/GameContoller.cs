@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MyTestProject.API.Request.GameController;
+using MyTestProject.API.Response.GameController;
 using MyTestProject.BLL.Entities;
 using MyTestProject.BLL.Finder;
 using MyTestProject.BLL.Services.Interfaces;
@@ -21,12 +22,12 @@ namespace MyTestProject.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Game>>> Get()
+        public async Task<ActionResult<List<GetGame>>> Get(bool includeCountOfPlayers = false)
         {
             try
             {
-                var data = await _gameService.Get();
-                return Ok(data);
+                var data = await _gameService.Get(includePlayers: includeCountOfPlayers);
+                return Ok(_mapper.Map<List<GetGame>>(data));
             }
             catch (Exception ex)
             {
@@ -43,8 +44,7 @@ namespace MyTestProject.API.Controllers
                 {
                     return BadRequest();
                 }
-                var mappedGame = _mapper.Map<Game>(game);
-                await _gameService.Create(mappedGame);
+                await _gameService.Create(_mapper.Map<Game>(game));
                 return Ok();
             }
             catch (Exception ex)
@@ -74,9 +74,32 @@ namespace MyTestProject.API.Controllers
             {
                 if (game == null)
                     return BadRequest(500);
-                var mappedGame = _mapper.Map<Game>(game);
-                await _gameService.Update(mappedGame);
+                await _gameService.Update(_mapper.Map<Game>(game));
                 return Ok();
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetFreeGames()
+        {
+            try
+            {
+                return Ok(await _gameService.GetAllFreeGames());
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetGamesForPrice(int price)
+        {
+            try
+            {
+                if (price == null)
+                    return BadRequest(500);
+                return Ok(await _gameService.GetGamesForPrice(price)); 
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
